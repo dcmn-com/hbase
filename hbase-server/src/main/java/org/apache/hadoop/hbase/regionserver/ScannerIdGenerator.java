@@ -18,6 +18,7 @@
  */
 package org.apache.hadoop.hbase.regionserver;
 
+import com.google.common.base.Charsets;
 import com.google.common.hash.Hashing;
 
 import java.util.concurrent.atomic.AtomicInteger;
@@ -41,7 +42,7 @@ public class ScannerIdGenerator {
   private final AtomicInteger scannerIdGen = new AtomicInteger(0);
 
   public ScannerIdGenerator(ServerName serverName) {
-    this.serverNameHash = (long)Hashing.murmur3_32().hashString(serverName.toString()).asInt() << 32;
+    this.serverNameHash = (long)Hashing.murmur3_32().hashBytes(Bytes.toBytes(serverName.toString())).asInt() << 32;
   }
 
   public long generateNewScannerId() {

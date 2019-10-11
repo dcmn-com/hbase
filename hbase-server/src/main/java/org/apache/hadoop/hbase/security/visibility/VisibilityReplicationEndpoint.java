@@ -21,7 +21,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.Executor;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
+import com.google.common.util.concurrent.Service;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.hadoop.hbase.Cell;
@@ -139,6 +143,11 @@ public class VisibilityReplicationEndpoint implements ReplicationEndpoint {
   }
 
   @Override
+  public Service startAsync() {
+    return delegator.startAsync();
+  }
+
+  @Override
   public State state() {
     return delegator.state();
   }
@@ -154,7 +163,42 @@ public class VisibilityReplicationEndpoint implements ReplicationEndpoint {
   }
 
   @Override
-  public void peerConfigUpdated(ReplicationPeerConfig rpc) {
+  public Service stopAsync() {
+    return this.delegator.stopAsync();
+  }
 
+  @Override
+  public void awaitRunning() {
+    this.delegator.awaitRunning();
+  }
+
+  @Override
+  public void awaitRunning(long l, TimeUnit timeUnit) throws TimeoutException {
+    this.delegator.awaitRunning(l, timeUnit);
+  }
+
+  @Override
+  public void awaitTerminated() {
+    this.delegator.awaitTerminated();
+  }
+
+  @Override
+  public void awaitTerminated(long l, TimeUnit timeUnit) throws TimeoutException {
+    this.delegator.awaitTerminated(l, timeUnit);
+  }
+
+  @Override
+  public Throwable failureCause() {
+    return this.delegator.failureCause();
+  }
+
+  @Override
+  public void addListener(Listener listener, Executor executor) {
+    this.delegator.addListener(listener, executor);
+  }
+
+  @Override
+  public void peerConfigUpdated(ReplicationPeerConfig rpc) {
+    this.delegator.peerConfigUpdated(rpc);
   }
 }

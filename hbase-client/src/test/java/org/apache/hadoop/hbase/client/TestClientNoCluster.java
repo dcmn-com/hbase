@@ -30,6 +30,7 @@ import java.util.SortedMap;
 import java.util.concurrent.ConcurrentSkipListMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -750,7 +751,7 @@ public class TestClientNoCluster extends Configured implements Tool {
           Get g = new Get(b);
           table.get(g);
           if (i % printInterval == 0) {
-            LOG.info("Get " + printInterval + "/" + stopWatch.elapsedMillis());
+            LOG.info("Get " + printInterval + "/" + stopWatch.elapsed(TimeUnit.MILLISECONDS));
             stopWatch.reset();
             stopWatch.start();
           }
@@ -768,7 +769,7 @@ public class TestClientNoCluster extends Configured implements Tool {
           p.add(HConstants.CATALOG_FAMILY, b, b);
           mutator.mutate(p);
           if (i % printInterval == 0) {
-            LOG.info("Put " + printInterval + "/" + stopWatch.elapsedMillis());
+            LOG.info("Put " + printInterval + "/" + stopWatch.elapsed(TimeUnit.MILLISECONDS));
             stopWatch.reset();
             stopWatch.start();
           }
